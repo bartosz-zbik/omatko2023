@@ -76,13 +76,14 @@
 \begin{frame}
 \frametitle{Pojęcia wstępne, notacja}
 Zmienne losowe definiuję na przestrzeni probabilistycznej $(\Omega, \F, \p)$. \\~\\
-
+\pause
 Zmienna losowa $X$, to intuicyjnie obiekt, który zachowuje się jak rzut kością (jest losowy).\\~\\
-
+\pause
 Wartość oczekiwaną ze zmiennej losowej $X$ oznaczam $\E X$. Intuicyjnie jest to średnia z $X$.\\~\\
-
-Proces stochastyczny $(X_t)_{t \in \Time}$, to rodzina zmiennych losowych indeksowanych czasem $t \in \Time$. \\~\\
-
+\pause
+Proces stochastyczny $(X_t)_{t \in \Time}$, to rodzina zmiennych losowych indeksowanych czasem $t \in \Time$.
+Intuicyjnie jest to losowy proces, który obserwujemy w czasie $t \in \Time$. \\~\\
+\pause
 Różne znaczenia liter t, T i $\tau$ (bo innych liter nie ma): \\
  $t$ - czas, $T$ - zmienna losowa, $\tau$ - FPT, $\T$ - MFPT i $\Time$ - zbiór czasu.
 
@@ -135,8 +136,10 @@ Czasem pierwszej ucieczki (FPT) nazywamy zmienną losową, która odpowiada chwi
 \includegraphics[width=0.9\textwidth]{wiener-sim/tr-with-bounds.pdf}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Po co to wszystko?}
+\pause
 W różnych zastosowaniach praktycznych interesuje nas \\ \emph{średni czas ucieczki}~$\T$ (ang. mean first passage time) 
 \begin{equation}
 \T := \E \tau~.
@@ -159,16 +162,18 @@ Możliwe rozwiązanie: \textbackslash title
 \begin{frame}
 \frametitle{Resetowanie Stochastyczne - resetowanie procesu}
 Załóżmy, że mamy proces $(X_t)_{t \in \Time}$, który startuje w $x_0$ (czyli $X_0 \equiv x_0$).\\
-Niech $R:\Omega \to \Time$ będzie niezależne od $(X_t)_{t \in \Time}$.
-\begin{block}{Definicja (nieformalna)}
-Zdefiniujmy\footnotemark{} $(X^r_t)_{t \in \Time}$ ("proces resetowany") jako
+\pause
+Niech $R:\Omega \to \Time$ (czas po jakim resetujemy), będzie niezależne od $(X_t)_{t \in \Time}$.
+\pause
+\begin{block}{Definicja}
+Zdefiniujmy\footnotemark{} $(X^*_t)_{t \in \Time}$ ("proces resetowany") jako
 \begin{equation}
-X^r_t = \begin{cases}
+X^*_t = \begin{cases}
 X_t &,~\text{gdy}~ t < R \\
-Y_{t-R}^r &,~\text{gdy}~ t \ge R~,
+Y_{t-R}^* &,~\text{gdy}~ t \ge R~,
 \end{cases}
 \end{equation}
-gdzie $(Y_t^r)_{t \in \Time}$ jest niezależną kopią procesu resetowanego $(X_t^r)_{t \in \Time}$.
+gdzie $(Y_t^*)_{t \in \Time}$ jest niezależną kopią procesu resetowanego $(X_t^*)_{t \in \Time}$.
 \end{block}
 
 \footnotetext{Bardziej formalnie można użyć ciągu i.i.d. zmiennych losowych o rozkładach jak $R$\\
@@ -204,7 +209,12 @@ gdzie $T_R'$ jest niezależne od $T_R$ i ma identyczny rozkład.
 
 \begin{frame}
 \frametitle{Resetowanie Stochastyczne - przykład optymalizacji MFPT}
-\includegraphics[width=0.9\textwidth]{wiener-sim/tr-resetting.pdf}
+\includegraphics[width=0.9\textwidth]{wiener-sim/tr-resetting-reg.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Resetowanie Stochastyczne - przykład optymalizacji MFPT}
+\includegraphics[width=0.9\textwidth]{wiener-sim/MFPT-r.pdf}
 \end{frame}
 
 
@@ -277,7 +287,7 @@ Jeśli $T$ ma interpretację jak FPT i $CV(T) > 1$, to istnieje $r$ (małe) tże
 \begin{equation}
 \boxed{ \T_R < \T, \quad \text{dla}~ R \sim \rm{Exp}(r) }.
 \end{equation}
-W założeniach $CV(T)$ oznacza współczynnik zmienności 
+W założeniach twierdzenia $CV(T)$ oznacza współczynnik zmienności 
 \begin{equation}
 CV(T) = \frac{\sigma(T)}{\E [T]} = \frac{\sqrt{ \E [(T - \T)^2] }}{\T} = \sqrt{\frac{\E [T^2]}{\T^2} - 1}
 \end{equation}
@@ -292,7 +302,7 @@ Jeśli $T$ ma interpretację jak FPT i $CV(T) > 1$, to istnieje $r$ (małe) tże
 \begin{equation}
 \boxed{ \T_R < \T, \quad \text{dla}~ R \sim \rm{Exp}(r) }.
 \end{equation}
-W założeniach $CV(T)$ oznacza współczynnik zmienności 
+W założeniach twierdzenia $CV(T)$ oznacza współczynnik zmienności 
 \begin{equation}
 CV(T) = \frac{\sigma(T)}{\E [T]} = \frac{\sqrt{ \E [(T - \T)^2] }}{\T} = \sqrt{\frac{\E [T^2]}{\T^2} - 1}
 \end{equation}
@@ -304,15 +314,16 @@ Wystarczy zbadać własności procesu (ucieczek) bez resetowania, żeby powiedzi
 \end{frame}
 
 \begin{frame}
-\frametitle{Zastosowanie dla  procesu Wienera}
+\frametitle{Zastosowanie kryterium CV dla  procesu Wienera}
 \begin{columns}
 \column{0.5\textwidth}
 \begin{figure}
 \includegraphics[width=\textwidth]{wiener-sim/CV-MFPT.pdf}
-\caption{Znormalizowane MFPT dla procesu Wienera startującego w $x_0$ i uciekającego z przedziału $(-1, 1)$.}
+\caption{Znormalizowane minimalne MFPT (minimum po różnych \emph{reset rate}) dla procesu Wienera startującego w $x_0$ i uciekającego z przedziału $(-1, 1)$.}
 \end{figure}
 
 \column{0.5\textwidth}
+\pause
 Aby zobaczyć kiedy resetowanie pomaga (i jak się ma do $CV$) definiujemy
 \begin{equation}
 \Lambda(x_0) = \frac{\min_{r \ge 0}{(\T_R)}}{\T},
@@ -326,9 +337,29 @@ Ponadto MFPT dla ucieczki z $(-L, L)$ kiedy proces startuje w $x_0$ wynosi
 
 \end{frame}
 
+\begin{frame}
+\frametitle{Podsumowanie}
+Resetowanie stochastyczne może zmniejszyć MFPT.\\~\\
+\pause
+Resetowanie stochastyczne można rozważać (i badać) w oderwaniu od procesu stochastycznego.\\~\\
+\pause
+Można formułować stosunkowo ogólne wnioski jak choćby
+\begin{equation*}
+\boxed{ CV(T) > 1 \implies \T_R < \T ~~\text{dla pewnego }~R \sim \text{Exp}(r)  }
+\end{equation*}
+
+
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Bibliografia}
+\begin{thebibliography}{7}
+\bibitem{pal2017first}A. Pal and S. Reuveni, Phys. Rev. Lett. 118, 030603 (2017)
+\bibitem{chechkin2018random}A. Chechkin and I. M. Sokolov Phys. Rev. Lett. 121, 050601 (2018)
+\bibitem{pal2019first}Arnab Pal and V. V. Prasad Phys. Rev. E 99, 032123 (2019)
+\bibitem{getoor1961}R. K. Getoor, Trans. Am. Math. Soc. 101, 75 (1961)
+\end{thebibliography}
 \end{frame}
 
 \end{document}
