@@ -1,7 +1,11 @@
 using CairoMakie
 using DelimitedFiles
 
-set_my_theme!()
+mytheme = merge(Theme(
+        Lines=(cycle=Cycle([:color, :linestyle], covary=true),),
+        Scatter=(cycle=Cycle([:color, :marker], covary=true),)
+    ), theme_latexfonts())
+set_theme!(mytheme)
 
 function CV_wiener(x0, L)
     return sqrt(2/3 * (L^2 + x0^2)/(L^2 - x0^2))
@@ -83,14 +87,16 @@ axislegend(ax, position = :lt, patchsize = (50, 25))
 save("CV-MFPT.pdf", fig)
 
 
-fig, ax = lines(0 .. 2000, x -> MFPT_wiener(0.25, 0.35, 1, x),
-    linewidth=3, label="MFPT(r)",
-    figure=(; resolution=(533, 400)))
+with_theme(mytheme, fontsize = 25) do
+fig, ax = lines(6e-4..3, x -> MFPT_wiener(0.25, 0.35, 1, 1/x),
+    linewidth=3, label="MFPT(r)")
 hlines!(ax, [MFPT_wiener_N(0.25, 0.35, 1)], linewidth=3, color=:magenta, linestyle=:dash, label="MFPT, bez resetowania")
-ax.xlabel = "r"
+ax.xlabel = L"\mathbb{E} R"
 ax.ylabel="MFPT"
 ax.title = "Ucieczka z (-0.6, 0.1), proces Wienera W₀≡0"
-axislegend(ax, position = :lt, patchsize = (50, 25))
+axislegend(ax, position = :rb, patchsize = (50, 25))
+ax.xscale = log10
 
 save("MFPT-r.pdf", fig)
+end
 
